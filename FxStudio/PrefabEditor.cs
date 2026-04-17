@@ -394,7 +394,7 @@ namespace FxEngineEditor
                 nm = CurrentBlueprint.Name;
             }
 
-            tr.DrawText("name: " + nm, new Vector2d(0, 0));
+            tr.RenderText("name: " + nm, new Vector2d(0, 0));
             if (CurrentBlueprint != null)
             {
                 if ((CurrentBlueprint is ObjModelBlueprint omb))
@@ -405,7 +405,7 @@ namespace FxEngineEditor
                     var mins = new Vector3d(bboxes.Min(z => z.Position.X), bboxes.Min(z => z.Position.Y), bboxes.Min(z => z.Position.Z));
                     var maxs = new Vector3d(bboxes.Max(z => z.Position.X + z.Size.X), bboxes.Max(z => z.Position.Y + z.Size.Y), bboxes.Max(z => z.Position.Z + z.Size.Z));
                     BoundingBox bbox = new BoundingBox() { Position = mins, Size = maxs - mins };
-                    tr.DrawText($"x:{bbox.Size.X} y:{bbox.Size.Y} z:{bbox.Size.Z}", new Vector2d(0, 0));
+                    tr.RenderText($"x:{bbox.Size.X} y:{bbox.Size.Y} z:{bbox.Size.Z}", new Vector2d(0, 0));
                 }
             }
             gl.SwapBuffers();
@@ -437,7 +437,7 @@ namespace FxEngineEditor
             GL.PopMatrix();
 
         }
-        SdfTextRoutine tr = new SdfTextRoutine();
+        SdfTextRenderer  tr = new SdfTextRenderer();
 
         void gl_Paint(object sender, PaintEventArgs e)
         {

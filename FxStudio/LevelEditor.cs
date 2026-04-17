@@ -573,20 +573,20 @@ namespace FxEngineEditor
             if (Level != null)
             {
 
-                tr.DrawText($"floor count: {Level.Tiles.Count};  models: {Level.Models.Count}", new Vector2d(0, 0));
+                tr.RenderText($"floor count: {Level.Tiles.Count};  models: {Level.Models.Count}", new Vector2d(0, 0));
             }
 
             if (checkBox1.Checked && BrushTile != null)
             {
-                tr.DrawText("snap position: " + GetRawPositionGridSnap(), new Vector2d(0, -40));
+                tr.RenderText("snap position: " + GetRawPositionGridSnap(), new Vector2d(0, -40));
             }
-            tr.DrawText("ds: " + (dt), new Vector2d(0, -80));
+            tr.RenderText("ds: " + (dt), new Vector2d(0, -80));
 
             GL.Disable(EnableCap.Blend);
         }
 
         float dt = 100;
-        SdfTextRoutine tr = new SdfTextRoutine();
+        SdfTextRenderer tr = new SdfTextRenderer();
 
         void gl_Paint(object sender, PaintEventArgs e)
         {
