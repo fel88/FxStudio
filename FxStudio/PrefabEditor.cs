@@ -3,8 +3,10 @@ using FxEngine.Cameras;
 using FxEngine.Fonts.SDF;
 using FxEngine.Loaders.Collada;
 using FxEngine.Loaders.OBJ;
-using OpenTK.Mathematics;
+using OpenTK.GLControl;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using SharpFont;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +15,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using OpenTK.GLControl;
 
 namespace FxEngineEditor
 {
@@ -21,7 +22,7 @@ namespace FxEngineEditor
     {
         GLControl gl;
         MessageFilter mf = null;
-        CameraViewManagerExt cvm = new CameraViewManagerExt();
+        GlControlCameraViewManager cvm = new GlControlCameraViewManager();
         public PrefabEditor()
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace FxEngineEditor
             settings.DepthBits = 24;
             settings.Profile = OpenTK.Windowing.Common.ContextProfile.Compatability;
             gl = new OpenTK.GLControl.GLControl(settings);
+
             //gl = new GLControl(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8));
             gl.Margin = new Padding(0);
 
@@ -50,7 +52,7 @@ namespace FxEngineEditor
             gl.Load += gl_Load;
 
             UpdatePrefabsList();
-            cvm.Attach(gl, camera);
+            cvm.Attach(new GlControlGameControlWrapper(gl), camera);
             gl.MouseDown += cvm.Control_MouseDown1;
 
             mf = new MessageFilter();
@@ -437,7 +439,7 @@ namespace FxEngineEditor
             GL.PopMatrix();
 
         }
-        SdfTextRenderer  tr = new SdfTextRenderer();
+        SdfTextRenderer tr = new SdfTextRenderer();
 
         void gl_Paint(object sender, PaintEventArgs e)
         {
@@ -557,7 +559,7 @@ namespace FxEngineEditor
             if (vv.Length == 0)
                 return;
 
-            FitToPoints(vv, camera);
+            camera.FitToPoints(vv, gl.Width, gl.Height);            
         }
 
         Vector3d[] getAllPoints()
@@ -597,46 +599,7 @@ namespace FxEngineEditor
             }
             return ret.ToArray();
         }
-
-        public void FitToPoints(Vector3d[] pnts, Camera cam, float gap = 10)
-        {
-            List<Vector2d> vv = new List<Vector2d>();
-            foreach (var vertex in pnts)
-            {
-                var p = MouseRay.Project(vertex.ToVector3(), cam.ProjectionMatrix, cam.ViewMatrix, cam.WorldMatrix, cam.viewport[2], cam.viewport[3]);
-                vv.Add(p.Xy);
-            }
-
-            //prjs->xy coords
-            var minx = vv.Min(z => z.X) - gap;
-            var maxx = vv.Max(z => z.X) + gap;
-            var miny = vv.Min(z => z.Y) - gap;
-            var maxy = vv.Max(z => z.Y) + gap;
-
-            var dx = (maxx - minx);
-            var dy = (maxy - miny);
-
-            var cx = dx / 2;
-            var cy = dy / 2;
-            var dir = cam.Target - cam.Eye;
-            //center back to 3d
-
-            var mr = new MouseRay((float)(cx + minx), (float)(cy + miny), cam);
-            var v0 = mr.Start;
-
-            cam.Eye = v0;
-            cam.Target = cam.Eye + dir;
-
-            var aspect = gl.Width / (float)(gl.Height);
-
-            dx /= gl.Width;
-            dx *= cam.OrthoWidth;
-            dy /= gl.Height;
-            dy *= cam.OrthoWidth;
-
-            cam.OrthoWidth = (float)Math.Max(dx, dy);
-        }
-
+                
         private void toolStripButton6_Click(object sender, EventArgs e)
         {
 
@@ -654,7 +617,7 @@ namespace FxEngineEditor
 
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
-                        
+
             var ll = (ObjVolume.LoadFromFile(ofd.FileName, Matrix4d.Identity));
             var ff = new FileInfo(ofd.FileName);
             Static.Library.AddModel(new ObjModelBlueprint("obj export: " + ff.Name, ll) { Id = Static.Library.ModelNewId });

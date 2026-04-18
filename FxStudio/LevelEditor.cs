@@ -22,7 +22,7 @@ namespace FxEngineEditor
     public partial class LevelEditor : Form
     {
         OpenTK.GLControl.GLControl gl;
-        CameraViewManagerExt cvm = new CameraViewManagerExt();
+        GlControlCameraViewManager cvm = new GlControlCameraViewManager();
         MessageFilter mf = null;
 
         public LevelEditor()
@@ -60,7 +60,7 @@ namespace FxEngineEditor
             //gl.MouseDown += Gl_MouseDown;
             //gl.MouseEnter += Gl_MouseEnter;
             gl.KeyUp += Gl_KeyUp;
-            cvm.Attach(gl, camera);
+            cvm.Attach(new GlControlGameControlWrapper(gl), camera);
             gl.MouseDown += cvm.Control_MouseDown1;
 
             gl.MouseDoubleClick += Gl_MouseDoubleClick;
@@ -279,7 +279,7 @@ namespace FxEngineEditor
         }
 
         Camera camera = new Camera() { IsOrtho = true };
-     
+
         Timer timer1 = new Timer();
         void gl_Load(object sender, EventArgs e)
         {
@@ -686,7 +686,7 @@ namespace FxEngineEditor
             {
                 var l = listView2.SelectedItems[0].Tag as GameLevel;
                 Level = l;
-                
+
                 propertyGrid1.SelectedObject = l;
                 UpdateCamerasList();
                 UpdateModelsList();
