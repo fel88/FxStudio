@@ -32,7 +32,7 @@ namespace FxEngineEditor
 
             propertyGrid6.SelectedObject = new Vector4Wrapper();
             propertyGrid5.SelectedObject = ls;
-            camera.CamFrom = new Vector3(170, 170, 170);
+            camera.Eye = new Vector3(170, 170, 170);
             UpdateTilesList();
             UpdateModelsList();
             UpdateLevels();
@@ -123,15 +123,15 @@ namespace FxEngineEditor
 
         float startPosX;
         float startPosY;
-        Vector3 cameraFromStart;
-        Vector3 cameraToStart;
+        Vector3d cameraFromStart;
+        Vector3d cameraToStart;
         private void Gl_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             var pos = CursorPosition;
             startPosX = pos.X;
             startPosY = pos.Y;
-            cameraFromStart = camera.CamFrom;
-            cameraToStart = camera.CamTo;
+            cameraFromStart = camera.Eye;
+            cameraToStart = camera.Target;
 
             if (e.Button == MouseButtons.Left)
             {
@@ -218,10 +218,10 @@ namespace FxEngineEditor
         public Point GetRawPositionGridSnap()
         {
             var cp = gl.PointToClient(System.Windows.Forms.Cursor.Position);
-            float cpx = cp.X - gl.Width / 2;
-            float cpy = -cp.Y + gl.Height / 2;
-            cpx += (int)camera.CamTo.X;
-            cpy += (int)camera.CamTo.Y;
+            double cpx = cp.X - gl.Width / 2;
+            double cpy = -cp.Y + gl.Height / 2;
+            cpx += (int)camera.Target.X;
+            cpy += (int)camera.Target.Y;
 
             var f = GetFloorPosition();
             cpx = f.X;
@@ -314,7 +314,7 @@ namespace FxEngineEditor
         bool drag = false;
         bool dragm = false;
 
-        public Vector2 GetFloorPosition()
+        public Vector2d GetFloorPosition()
         {
             var curp = System.Windows.Forms.Cursor.Position;
 
@@ -324,27 +324,27 @@ namespace FxEngineEditor
             //find intersection with plane
             bool was = false;
 
-            float t = -nearPoint3D.Z / dir1.Z;
-            Vector3 inter = nearPoint3D + dir1 * t;
+            var t = -nearPoint3D.Z / dir1.Z;
+            Vector3d inter = nearPoint3D + dir1 * t;
 
             return inter.Xy;
         }
 
         float startScale;
+
         public void UpdateKeys()
         {
-
-            var dir = camera.CamFrom - camera.CamTo;
+            var dir = camera.Eye - camera.Target;
             var cv = dir;
-            var moveVec = new Vector3(cv.X, cv.Y, 0).Normalized();
-            var moveVecTan = new Vector3(-moveVec.Y, moveVec.X, 0);
+            var moveVec = new Vector3d(cv.X, cv.Y, 0).Normalized();
+            var moveVecTan = new Vector3d(-moveVec.Y, moveVec.X, 0);
             var pos = CursorPosition;
             float zoom = 1;
             if (drag)
             {
                 var dx = moveVecTan * ((startPosX - pos.X) / zoom) + moveVec * ((startPosY - pos.Y) / zoom);
-                camera.CamFrom = cameraFromStart + dx;
-                camera.CamTo = cameraToStart + dx;
+                camera.Eye = cameraFromStart + dx;
+                camera.Target = cameraToStart + dx;
 
             }
             if (dragm)
@@ -357,26 +357,26 @@ namespace FxEngineEditor
 
             if (IsKeyPressed(System.Windows.Forms.Keys.PageDown))
             {
-                camera.CamFrom += camera.CamUp * 10;
+                camera.Eye += camera.Up * 10;
 
             }
             if (IsKeyPressed(System.Windows.Forms.Keys.PageUp))
             {
-                camera.CamFrom -= camera.CamUp * 10;
+                camera.Eye -= camera.Up * 10;
 
             }
             if (IsKeyPressed(System.Windows.Forms.Keys.Home))
             {
-                var dir2 = camera.CamFrom - camera.CamTo;
-                dir2 = dir2 * Matrix3.CreateRotationZ(0.03f);
-                camera.CamFrom = camera.CamTo + dir2;
+                var dir2 = camera.Eye - camera.Target;
+                dir2 = dir2 * Matrix3d.CreateRotationZ(0.03f);
+                camera.Eye = camera.Target + dir2;
             }
 
             if (IsKeyPressed(System.Windows.Forms.Keys.End))
             {
-                var dir2 = camera.CamFrom - camera.CamTo;
-                dir2 = dir2 * Matrix3.CreateRotationZ(-0.03f);
-                camera.CamFrom = camera.CamTo + dir2;
+                var dir2 = camera.Eye - camera.Target;
+                dir2 = dir2 * Matrix3d.CreateRotationZ(-0.03f);
+                camera.Eye = camera.Target + dir2;
             }
 
         }
@@ -447,7 +447,7 @@ namespace FxEngineEditor
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Enable(EnableCap.DepthTest);
 
-            camera.Setup(gl);
+            camera.Setup(gl.Size);
             MouseRay.UpdateMatrices();
 
             GL.Enable(EnableCap.Lighting);
@@ -645,14 +645,14 @@ namespace FxEngineEditor
 
         private void toolStripButton1_Click_1(object sender, EventArgs e)
         {
-            camera.CamFrom = new Vector3(0, 0, 100);
-            camera.CamUp = Vector3.UnitY;
+            camera.Eye = new Vector3(0, 0, 100);
+            camera.Up = Vector3.UnitY;
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            camera.CamFrom = new Vector3(100, 100, 100);
-            camera.CamUp = Vector3.UnitZ;
+            camera.Eye = new Vector3(100, 100, 100);
+            camera.Up = Vector3.UnitZ;
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
@@ -751,7 +751,7 @@ namespace FxEngineEditor
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Level.Cameras.Add(new Camera() { CamFrom = camera.CamFrom, CamTo = camera.CamTo, CamUp = camera.CamUp, IsOrtho = camera.IsOrtho, Id = Level.CameraNewId });
+            Level.Cameras.Add(new Camera() { Eye = camera.Eye, Target = camera.Target, Up = camera.Up, IsOrtho = camera.IsOrtho, Id = Level.CameraNewId });
             Static.Library.Dirty = true;
             UpdateCamerasList();
 

@@ -26,8 +26,8 @@ namespace FxEngineEditor
         {
             InitializeComponent();
 
-            camera.CamFrom = new Vector3(-50, -50, 50);
-            camera.CamTo = new Vector3(0, 0, 0);
+            camera.Eye = new Vector3(-50, -50, 50);
+            camera.Target = new Vector3(0, 0, 0);
 
             GLControlSettings settings = new GLControlSettings();
             settings.NumberOfSamples = 8;
@@ -187,7 +187,7 @@ namespace FxEngineEditor
 
             GL.Enable(EnableCap.DepthTest);
 
-            camera.Setup(gl);
+            camera.Setup(gl.Size);
 
             if (gl.Focused)
                 GL.Color3(Color.Yellow);
@@ -604,7 +604,7 @@ namespace FxEngineEditor
             foreach (var vertex in pnts)
             {
                 var p = MouseRay.Project(vertex.ToVector3(), cam.ProjectionMatrix, cam.ViewMatrix, cam.WorldMatrix, cam.viewport[2], cam.viewport[3]);
-                vv.Add(p.Xy.ToVector2d());
+                vv.Add(p.Xy);
             }
 
             //prjs->xy coords
@@ -618,14 +618,14 @@ namespace FxEngineEditor
 
             var cx = dx / 2;
             var cy = dy / 2;
-            var dir = cam.CamTo - cam.CamFrom;
+            var dir = cam.Target - cam.Eye;
             //center back to 3d
 
             var mr = new MouseRay((float)(cx + minx), (float)(cy + miny), cam);
             var v0 = mr.Start;
 
-            cam.CamFrom = v0;
-            cam.CamTo = cam.CamFrom + dir;
+            cam.Eye = v0;
+            cam.Target = cam.Eye + dir;
 
             var aspect = gl.Width / (float)(gl.Height);
 
@@ -703,8 +703,8 @@ namespace FxEngineEditor
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            camera.CamFrom = new Vector3(-50, -50, 50);
-            camera.CamTo = new Vector3(0, 0, 0);
+            camera.Eye = new Vector3(-50, -50, 50);
+            camera.Target = new Vector3(0, 0, 0);
         }
 
         private void orthoToolStripMenuItem_Click(object sender, EventArgs e)
