@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36408.4 d17.14
+VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxStudio", "FxStudio\FxStudio.csproj", "{1229ABCF-E497-4CFA-B093-F3FE1B752E0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxEngine", "FxEngine\FxEngine\FxEngine.csproj", "{2A7135BB-B387-2AD1-77FB-35715ED7AC18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxEngine.Game", "FxEngine\FxEngine.Game\FxEngine.Game.csproj", "{D8B71A16-64F2-C667-F975-C8D97CC0E647}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxEngine.Gui", "FxEngine\FxEngine.Gui\FxEngine.Gui.csproj", "{189C3B9B-8DC9-3B9A-6C06-3DDA46506313}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxEngine.Collada", "FxEngine\FxEngine.Collada\FxEngine.Collada.csproj", "{4FD6D8AB-4E20-6061-8B48-1AFDEDA6FB27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxEngine.Common", "FxEngine\FxEngine.Common\FxEngine.Common.csproj", "{411DC267-CE8B-E1C3-900F-2305557B0D9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{2A7135BB-B387-2AD1-77FB-35715ED7AC18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A7135BB-B387-2AD1-77FB-35715ED7AC18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A7135BB-B387-2AD1-77FB-35715ED7AC18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B71A16-64F2-C667-F975-C8D97CC0E647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B71A16-64F2-C667-F975-C8D97CC0E647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B71A16-64F2-C667-F975-C8D97CC0E647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B71A16-64F2-C667-F975-C8D97CC0E647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{189C3B9B-8DC9-3B9A-6C06-3DDA46506313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{189C3B9B-8DC9-3B9A-6C06-3DDA46506313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{189C3B9B-8DC9-3B9A-6C06-3DDA46506313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{189C3B9B-8DC9-3B9A-6C06-3DDA46506313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FD6D8AB-4E20-6061-8B48-1AFDEDA6FB27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FD6D8AB-4E20-6061-8B48-1AFDEDA6FB27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FD6D8AB-4E20-6061-8B48-1AFDEDA6FB27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FD6D8AB-4E20-6061-8B48-1AFDEDA6FB27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{411DC267-CE8B-E1C3-900F-2305557B0D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{411DC267-CE8B-E1C3-900F-2305557B0D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{411DC267-CE8B-E1C3-900F-2305557B0D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{411DC267-CE8B-E1C3-900F-2305557B0D9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

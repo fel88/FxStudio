@@ -41,6 +41,9 @@
     <PackageReference Include="System.Drawing.Common" Version="8.0.24" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FxEngine\FxEngine.Collada\FxEngine.Collada.csproj" />
+    <ProjectReference Include="..\FxEngine\FxEngine.Game\FxEngine.Game.csproj" />
+    <ProjectReference Include="..\FxEngine\FxEngine.Gui\FxEngine.Gui.csproj" />
     <ProjectReference Include="..\FxEngine\FxEngine\FxEngine.csproj" />
   </ItemGroup>
   <ItemGroup>

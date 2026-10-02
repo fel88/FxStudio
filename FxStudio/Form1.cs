@@ -1,5 +1,6 @@
 ﻿using FxEngine;
 using FxEngine.Assets;
+using FxEngine.Game;
 using FxEngine.Interfaces;
 using FxEngine.Loaders.Collada;
 using FxEngine.Loaders.OBJ;

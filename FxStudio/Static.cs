@@ -1,4 +1,5 @@
 ﻿using FxEngine;
+using FxEngine.Game;
 
 namespace FxEngineEditor
 {
